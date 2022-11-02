@@ -1,10 +1,13 @@
 const knex = require('../database/dbConnect');
+const bcrypt = require('bcrypt');
 
 const SignUp = async (req, res) => {
     const { name, email, password, study_tracks } = req.body;
 
     try {
-        const teste = await knex('users').insert({ name, email, password, study_tracks }).returning('*');
+        const encryptedPassword = await bcrypt.hash(password, 10);
+
+        await knex('users').insert({ name, email, password: encryptedPassword, study_tracks }).returning('*');
 
         return res.status(201).json({ message: 'Cadastro realizado com sucesso!' });
     } catch (error) {

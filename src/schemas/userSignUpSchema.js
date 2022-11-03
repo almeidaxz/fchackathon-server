@@ -14,7 +14,8 @@ const errorEmail = {
 
 const errorPassword = {
     'any.required': 'A senha deve ser informada.',
-    'string.min': 'A senha deve ter no mínimo 8 caracteres.'
+    'string.min': 'A senha deve ter no mínimo 8 caracteres.',
+    'string.empty': 'A senha deve ser informada.'
 };
 
 const errorStudyTrack = {
@@ -25,7 +26,8 @@ const errorStudyTrack = {
 const userSignUpSchema = joi.object({
     name: joi.string().min(4).required().messages(errorName),
     email: joi.string().email().required().messages(errorEmail),
-    password: joi.string().min(8).required().messages(errorPassword)
+    password: joi.string().min(8).required().messages(errorPassword),
+    study_tracks: joi.string().required().messages(errorStudyTrack)
 });
 
 module.exports = {

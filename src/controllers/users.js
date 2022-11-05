@@ -3,13 +3,13 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const SignUp = async (req, res) => {
-    const { name, email, password, study_tracks } = req.body;
+    const { name, email, password } = req.body;
 
     try {
         const encryptedPassword = await bcrypt.hash(password, 10);
 
         await knex("users")
-            .insert({ name, email, password: encryptedPassword, study_tracks })
+            .insert({ name, email, password: encryptedPassword })
             .returning("*");
 
         return res
@@ -24,27 +24,28 @@ const Login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        var result = await knex("users").where({ email }).returning("*");
+        const userExists = await knex("users").where({ email }).first();
 
-        if (result.length < 1) {
+        if (!userExists) {
             return res.status(401).send({ message: "Falha na autenticação" });
         }
 
-        if (await bcrypt.compareSync(password, result[0].password)) {
+        if (await bcrypt.compareSync(password, userExists.password)) {
             const token = jwt.sign(
                 {
-                    email: result[0].email,
+                    email: userExists.email,
                 },
                 process.env.JWT_KEY,
                 {
                     expiresIn: "5h",
                 }
             );
+
+            const { password: _, ...logedUser } = userExists;
+
             return res.status(200).send({
                 message: "Autenticado com sucesso",
-                name: result[0].name,
-                email: result[0].email,
-                study_tracks: result[0].study_tracks,
+                logedUser,
                 token: token,
             });
         }
@@ -55,7 +56,51 @@ const Login = async (req, res) => {
     }
 };
 
+const UpdateUser = async (req, res) => {
+    const { id, name, email, password } = req.body;
+
+    try {
+        var user = await knex("users").where({ id }).first();
+
+        if (typeof name === undefined) name = user.name;
+        if (typeof email === undefined) email = user.email;
+        if (password === undefined) {
+            await knex("users").where({ id }).update({ name, email });
+
+            return res
+                .status(201)
+                .json({ message: "Cadastro atualizado com sucesso!" });
+        }
+        var encryptedPassword = await bcrypt.hash(password, 10);
+        await knex("users")
+            .where({ id })
+            .update({ name, email, password: encryptedPassword });
+
+        return res
+            .status(201)
+            .json({ message: "Cadastro atualizado com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
+// const SignToTrack = async (res, req) => {
+//     const { track_name } = req.params;
+//     const { user_id } = req.body;
+
+//     try {
+//         const trackId = await knex('tracks').where({ name: track_name });
+
+//         if(!trackId)
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({ message: 'Erro no servidor.' });
+//     }
+// }
+
 module.exports = {
     SignUp,
     Login,
+    UpdateUser,
 };

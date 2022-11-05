@@ -1,8 +1,8 @@
 const express = require("express");
 const routes = express.Router();
 
-const { SignUp, Login } = require("./controllers/users");
-const { AdminSignUp, AdminLogin } = require("./controllers/admins");
+const { SignUp, Login, UpdateUser } = require("./controllers/users");
+const { AdminSignUp, AdminLogin, AdminAddTrack } = require("./controllers/admins");
 const {
     validateUserData,
     loginRequired,
@@ -12,7 +12,10 @@ const { userSignUpSchema } = require("./schemas/userSignUpSchema");
 
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
 routes.post("/login", Login);
-routes.post("/admin/signup", AdminSignUp);
+routes.post("/user/update", UpdateUser);
+routes.post("/user/sign_track", UpdateUser);
+routes.post("/admin/signup", AdminSignUp); //DEVELOPMENT ONLY
 routes.post("/admin/login", AdminLogin);
+routes.post("/admin/add_track", AdminAddTrack);
 
 module.exports = routes;

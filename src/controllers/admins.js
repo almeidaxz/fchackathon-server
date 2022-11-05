@@ -34,6 +34,45 @@ const AdminLogin = async (req, res) => {
     }
 };
 
+const AdminAddTrack = async (req, res) => {
+    const { name, status } = req.body;
+
+    try {
+        const trackExists = await knex('tracks').where({ name }).first();
+        if (trackExists) return res.status(400).json({ message: 'Trilha já existente' });
+
+        if (!name) return res.status(400).json({ message: 'Informe o nome da trilha.' });
+
+        await knex('tracks').insert({ name, status }).returning('*');
+
+        return res.status(201).json({ message: 'Trilha cadastrada com sucesso.' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+}
+
+const AdminAddTrackContent = async (req, res) => {
+    const { name, type, duration, complete, url, description, url_image } = req.body;
+
+    try {
+        if (!name || !type || !duration || !url) {
+            return res.status(400).json({ message: 'Informe todos os dados obrigatórios' });
+        }
+
+        if (type === 'artigo' && !description || type === 'artigo' && !url_image) {
+            return res.status(400).json({ message: 'Uma descrição e a url da imagem são obrigatórias caso o tipo seja artigo.' });
+        }
+
+        await knex('contents').insert({ name, type, duration, complete, url, description, url_image }).returning('*');
+
+        return res.status(201).json({ message: 'Conteúdo cadastrado com sucesso.' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+}
+
 //DEVELOPMENT ONLY
 const AdminSignUp = async (req, res) => {
     const { name, email, password } = req.body;
@@ -49,7 +88,10 @@ const AdminSignUp = async (req, res) => {
     }
 };
 
+
 module.exports = {
     AdminSignUp,
-    AdminLogin
+    AdminLogin,
+    AdminAddTrack,
+    AdminAddTrackContent
 };

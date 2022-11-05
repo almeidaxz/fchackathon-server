@@ -38,6 +38,7 @@ const AdminAddTrack = async (req, res) => {
     const { name, status } = req.body;
 
     try {
+    
         const trackExists = await knex('tracks').where({ name }).first();
         if (trackExists) return res.status(400).json({ message: 'Trilha já existente' });
 

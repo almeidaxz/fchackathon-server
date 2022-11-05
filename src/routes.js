@@ -1,7 +1,7 @@
 const express = require("express");
 const routes = express.Router();
 
-const { SignUp, Login } = require("./controllers/users");
+const { SignUp, Login, UpdateUser } = require("./controllers/users");
 const { AdminSignUp, AdminLogin } = require("./controllers/admins");
 const {
     validateUserData,
@@ -12,6 +12,7 @@ const { userSignUpSchema } = require("./schemas/userSignUpSchema");
 
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
 routes.post("/login", Login);
+routes.post("/user/update", UpdateUser);
 routes.post("/admin/signup", AdminSignUp);
 routes.post("/admin/login", AdminLogin);
 

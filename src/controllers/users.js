@@ -55,7 +55,37 @@ const Login = async (req, res) => {
     }
 };
 
+const UpdateUser = async (req, res) => {
+    const { id, name, email, password } = req.body;
+
+    try {
+        var user = await knex("users").where({ id }).first();
+
+        if (typeof name === undefined) name = user.name;
+        if (typeof email === undefined) email = user.email;
+        if (password === undefined) {
+            await knex("users").where({ id }).update({ name, email });
+
+            return res
+                .status(201)
+                .json({ message: "Cadastro atualizado com sucesso!" });
+        }
+        var encryptedPassword = await bcrypt.hash(password, 10);
+        await knex("users")
+            .where({ id })
+            .update({ name, email, password: encryptedPassword });
+
+        return res
+            .status(201)
+            .json({ message: "Cadastro atualizado com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
 module.exports = {
     SignUp,
     Login,
+    UpdateUser,
 };

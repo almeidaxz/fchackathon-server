@@ -51,3 +51,5 @@ ALTER TABLE
     track_content ADD CONSTRAINT track_content_track_id_foreign FOREIGN KEY(track_id) REFERENCES tracks(id);
 ALTER TABLE
     track_content ADD CONSTRAINT track_content_content_id_foreign FOREIGN KEY(content_id) REFERENCES contents(id);
+
+ALTER TABLE user_track DROP COLUMN id;

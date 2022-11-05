@@ -49,7 +49,24 @@ const AdminSignUp = async (req, res) => {
     }
 };
 
+//DEVELOPMENT ONLY
+const AdminAddTrack = async (req, res) => {
+    const { name, status } = req.body;
+
+    try {
+        if (!name) return res.status(400).json({ message: 'Informe o nome da trilha.' });
+
+        await knex('tracks').insert({ name, status });
+
+        return res.status(201).json({ message: 'Trilha cadastrada com sucesso.' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+}
+
 module.exports = {
     AdminSignUp,
-    AdminLogin
+    AdminLogin,
+    AdminAddTrack
 };

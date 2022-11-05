@@ -85,6 +85,20 @@ const UpdateUser = async (req, res) => {
     }
 };
 
+// const SignToTrack = async (res, req) => {
+//     const { track_name } = req.params;
+//     const { user_id } = req.body;
+
+//     try {
+//         const trackId = await knex('tracks').where({ name: track_name });
+
+//         if(!trackId)
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({ message: 'Erro no servidor.' });
+//     }
+// }
+
 module.exports = {
     SignUp,
     Login,

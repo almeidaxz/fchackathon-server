@@ -3,13 +3,13 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const SignUp = async (req, res) => {
-    const { name, email, password, study_tracks } = req.body;
+    const { name, email, password } = req.body;
 
     try {
         const encryptedPassword = await bcrypt.hash(password, 10);
 
         await knex("users")
-            .insert({ name, email, password: encryptedPassword, study_tracks })
+            .insert({ name, email, password: encryptedPassword })
             .returning("*");
 
         return res
@@ -24,27 +24,28 @@ const Login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        var result = await knex("users").where({ email }).returning("*");
+        const userExists = await knex("users").where({ email }).first();
 
-        if (result.length < 1) {
+        if (!userExists) {
             return res.status(401).send({ message: "Falha na autenticação" });
         }
 
-        if (await bcrypt.compareSync(password, result[0].password)) {
+        if (await bcrypt.compareSync(password, userExists.password)) {
             const token = jwt.sign(
                 {
-                    email: result[0].email,
+                    email: userExists.email,
                 },
                 process.env.JWT_KEY,
                 {
                     expiresIn: "5h",
                 }
             );
+
+            const { password: _, ...logedUser } = userExists;
+
             return res.status(200).send({
                 message: "Autenticado com sucesso",
-                name: result[0].name,
-                email: result[0].email,
-                study_tracks: result[0].study_tracks,
+                logedUser,
                 token: token,
             });
         }

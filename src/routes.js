@@ -20,12 +20,14 @@ const {
     validateEmailUser,
 } = require("./middlewares/users");
 const { validateAdminData } = require("./middlewares/admins");
+const { GetTracks } = require("./controllers/tracks");
 const { userSignUpSchema } = require("./schemas/userSignUpSchema");
 
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
 routes.post("/login", Login);
 routes.post("/user/update", validateEmailUser, UpdateUser);
 routes.post("/user/sign_track/:track_id", SignToTrack);
+routes.get("/tracks", GetTracks);
 routes.post("/admin/signup", validateAdminData(userSignUpSchema), AdminSignUp); //DEVELOPMENT ONLY
 routes.post("/admin/login", AdminLogin);
 routes.post("/admin/add_track", AdminAddTrack);

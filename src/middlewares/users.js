@@ -18,7 +18,6 @@ const validateUserData = (joiSchema) => async (req, res, next) => {
 
         next();
     } catch (error) {
-        console.log(error);
         return res.status(400).json({ message: error.message });
     }
 };
@@ -45,8 +44,26 @@ const loginOptional = async (req, res, next) => {
     }
 };
 
+const validateEmailUser = async (req, res, next) => {
+    const { email } = req.body;
+
+    try {
+        const existingEmail = await knex("users").where({ email }).first();
+
+        if (existingEmail)
+            return res
+                .status(400)
+                .json({ message: "E-mail informado já cadastrado." });
+
+        next();
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+};
+
 module.exports = {
     validateUserData,
     loginRequired,
     loginOptional,
+    validateEmailUser,
 };

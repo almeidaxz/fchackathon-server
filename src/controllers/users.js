@@ -25,33 +25,28 @@ const Login = async (req, res) => {
 
     try {
         const userExists = await knex("users").where({ email }).first();
-
         if (!userExists) {
-            return res.status(401).send({ message: "Falha na autenticação" });
+            return res.status(401).send({ message: "E-mail ou senha inválidos." });
         }
 
-        if (await bcrypt.compareSync(password, userExists.password)) {
-            const token = jwt.sign(
-                {
-                    email: userExists.email,
-                },
-                process.env.JWT_KEY,
-                {
-                    expiresIn: "5h",
-                }
-            );
+        const decryptedPassword = await bcrypt.compare(password, userExists.password);
 
-            const { password: _, ...logedUser } = userExists;
-
-            return res.status(200).send({
-                message: "Autenticado com sucesso",
-                logedUser,
-                token: token,
-            });
+        if (!decryptedPassword) {
+            return res.status(401).json({ message: 'E-mail ou senha inválidos.' });
         }
 
-        return res.status(401).send({ message: "Falha na autenticação" });
+        const token = jwt.sign({ email }, process.env.JWT_KEY, { expiresIn: "5h", });
+
+        const { password: _, ...logedUser } = userExists;
+
+        return res.status(200).send({
+            message: "Autenticado com sucesso",
+            logedUser,
+            token,
+        });
+
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };

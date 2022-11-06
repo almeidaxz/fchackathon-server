@@ -80,7 +80,6 @@ const UpdateUser = async (req, res) => {
             .status(201)
             .json({ message: "Cadastro atualizado com sucesso!" });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };

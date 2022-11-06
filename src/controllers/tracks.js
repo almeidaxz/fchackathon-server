@@ -36,7 +36,28 @@ const GetTracks = async (req, res) => {
     }
 };
 
+const GetContentsToTrack = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const contents = await knex
+            .select("*")
+            .from("contents")
+            .join("track_content", function () {
+                this.on("contents.id", "=", "content_id").onIn("track_id", id);
+            });
+        if (!contents)
+            return res
+                .status(404)
+                .json({ message: "Nenhum conteúdo cadastrado!" });
+        return res.status(200).send(contents);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
 module.exports = {
     SignToTrack,
     GetTracks,
+    GetContentsToTrack,
 };

@@ -22,6 +22,21 @@ const SignToTrack = async (req, res) => {
     }
 };
 
+const GetTracks = async (req, res) => {
+    try {
+        const tracks = await knex.select().table("tracks");
+        if (!tracks)
+            return res
+                .status(404)
+                .json({ message: "Nenhuma trilha cadastrada!" });
+        return res.status(200).send({ tracks });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
 module.exports = {
     SignToTrack,
+    GetTracks,
 };

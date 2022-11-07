@@ -104,9 +104,30 @@ const SignToTrack = async (req, res) => {
     }
 };
 
+const GetUserTracks = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const tracks = await knex
+            .select("*")
+            .from("tracks")
+            .join("user_track", function () {
+                this.on("tracks.id", "=", "track_id").onIn("user_id", id);
+            });
+        if (tracks.length < 1)
+            return res
+                .status(404)
+                .json({ message: "Nenhuma trilha cadastrada!" });
+        return res.status(200).send(tracks);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
 module.exports = {
     SignUp,
     Login,
     UpdateUser,
     SignToTrack,
+    GetUserTracks,
 };

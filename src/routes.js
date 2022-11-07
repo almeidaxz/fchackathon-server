@@ -6,6 +6,7 @@ const {
     Login,
     UpdateUser,
     SignToTrack,
+    GetUserTracks,
 } = require("./controllers/users");
 const {
     AdminSignUp,
@@ -27,6 +28,7 @@ routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
 routes.post("/login", Login);
 routes.post("/user/update", validateEmailUser, UpdateUser);
 routes.post("/user/sign_track/:track_id", SignToTrack);
+routes.get("/user/tracks/:id", GetUserTracks);
 routes.get("/tracks", GetTracks);
 routes.get("/:id/contents", GetContentsToTrack);
 routes.post("/admin/signup", validateAdminData(userSignUpSchema), AdminSignUp); //DEVELOPMENT ONLY

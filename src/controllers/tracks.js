@@ -2,26 +2,6 @@ const knex = require("../database/dbConnect");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const SignToTrack = async (req, res) => {
-    const { track_id } = req.params;
-    const { user_id } = req.body;
-
-    try {
-        const selectedTrack = await knex("tracks")
-            .where({ id: track_id })
-            .first();
-        if (!selectedTrack)
-            return res.status(404).json({ message: "Trilha não encontrada." });
-
-        await knex("user_track").insert({ track_id, user_id }).returning("*");
-
-        return res.status(201).json({ message: "Trilha iniciada!" });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Erro no servidor." });
-    }
-};
-
 const GetTracks = async (req, res) => {
     try {
         const tracks = await knex.select().table("tracks");
@@ -56,8 +36,34 @@ const GetContentsToTrack = async (req, res) => {
     }
 };
 
+const DeleteTrack = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        var trackExists = await knex("tracks").where({ id }).first();
+
+        if (!trackExists) {
+            return res.status(401).send({ message: "Trilha não encontrado." });
+        }
+        await knex.select().table("user_track").where({ track_id: id }).del();
+        await knex
+            .select()
+            .table("track_content")
+            .where({ track_id: id })
+            .del();
+        await knex("tracks").where({ id }).del();
+
+        return res
+            .status(201)
+            .json({ message: "Trilha deletada com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
 module.exports = {
-    SignToTrack,
     GetTracks,
     GetContentsToTrack,
+    DeleteTrack,
 };

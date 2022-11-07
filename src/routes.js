@@ -7,6 +7,7 @@ const {
     UpdateUser,
     SignToTrack,
     GetUserTracks,
+    DeleteUser,
 } = require("./controllers/users");
 const {
     AdminSignUp,
@@ -26,7 +27,8 @@ const { userSignUpSchema } = require("./schemas/userSignUpSchema");
 
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
 routes.post("/login", Login);
-routes.post("/user/update", validateEmailUser, UpdateUser);
+routes.put("/user/update", validateEmailUser, UpdateUser);
+routes.delete("/user/delete/:id", DeleteUser);
 routes.post("/user/sign_track/:track_id", SignToTrack);
 routes.get("/user/tracks/:id", GetUserTracks);
 routes.get("/tracks", GetTracks);

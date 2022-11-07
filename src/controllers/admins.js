@@ -124,6 +124,32 @@ const AdminSignUp = async (req, res) => {
     }
 };
 
+const DeleteTrack = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        var trackExists = await knex("tracks").where({ id }).first();
+
+        if (!trackExists) {
+            return res.status(401).send({ message: "Trilha não encontrado." });
+        }
+        await knex.select().table("user_track").where({ track_id: id }).del();
+        await knex
+            .select()
+            .table("track_content")
+            .where({ track_id: id })
+            .del();
+        await knex("tracks").where({ id }).del();
+
+        return res
+            .status(201)
+            .json({ message: "Trilha deletada com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
 const DeleteContent = async (req, res) => {
     const { id } = req.params;
 
@@ -158,4 +184,5 @@ module.exports = {
     AdminAddTrack,
     AdminAddTrackContent,
     DeleteContent,
+    DeleteTrack,
 };

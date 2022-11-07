@@ -1,0 +1,93 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "tittle": "Orange Evolution V2.0",
+        "description": "Documentation from Orange Evolution api",
+        "version": "1.0.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/signup": {
+            "post": {
+                "tags": ["User"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "João da Silva",
+                                    "email": "joaodasilva@email.com",
+                                    "password": "12345678"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "E-mail informado já cadastrado."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    },
+                    "201": {
+                        "description": "Cadastro realizado com sucesso!"
+                    }
+                }
+            }
+        },
+        "/admin/signup": {
+            "post": {
+                "tags": ["Admin"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "João da Silva",
+                                    "email": "joaodasilva@email.com",
+                                    "password": "12345678"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "E-mail informado já cadastrado."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    },
+                    "201": {
+                        "description": "Cadastro realizado com sucesso!"
+                    }
+                }
+            }
+        }
+    }
+}

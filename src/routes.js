@@ -14,6 +14,7 @@ const {
     AdminLogin,
     AdminAddTrack,
     AdminAddTrackContent,
+    DeleteContent,
 } = require("./controllers/admins");
 const {
     validateUserData,
@@ -42,5 +43,6 @@ routes.post("/admin/signup", validateAdminData(userSignUpSchema), AdminSignUp); 
 routes.post("/admin/login", AdminLogin);
 routes.post("/admin/add_track", AdminAddTrack);
 routes.post("/admin/add_content", AdminAddTrackContent);
+routes.delete("/admin/del_content/:id", DeleteContent);
 
 module.exports = routes;

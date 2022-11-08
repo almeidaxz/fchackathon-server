@@ -148,6 +148,40 @@ const GetUserTracks = async (req, res) => {
     }
 };
 
+const GetContentsToTrack = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const contents = await knex
+            .select("*")
+            .from("contents")
+            .join("track_content", function () {
+                this.on("contents.id", "=", "content_id").onIn("track_id", id);
+            });
+        if (!contents)
+            return res
+                .status(404)
+                .json({ message: "Nenhum conteúdo cadastrado!" });
+        return res.status(200).send(contents);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
+const GetTracks = async (req, res) => {
+    try {
+        const tracks = await knex.select().table("tracks");
+        if (!tracks)
+            return res
+                .status(404)
+                .json({ message: "Nenhuma trilha cadastrada!" });
+        return res.status(200).send({ tracks });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
 module.exports = {
     SignUp,
     Login,
@@ -155,4 +189,6 @@ module.exports = {
     SignToTrack,
     GetUserTracks,
     DeleteUser,
+    GetContentsToTrack,
+    GetTracks,
 };

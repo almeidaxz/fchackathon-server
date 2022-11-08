@@ -61,6 +61,9 @@ const UpdateUser = async (req, res) => {
 
     try {
         var user = await knex("users").where({ id }).first();
+        if (!user) {
+            return res.status(401).send({ message: "Usuário não existe!" });
+        }
 
         if (typeof name === undefined) name = user.name;
         if (typeof email === undefined) email = user.email;
@@ -80,6 +83,27 @@ const UpdateUser = async (req, res) => {
             .status(201)
             .json({ message: "Cadastro atualizado com sucesso!" });
     } catch (error) {
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
+const DeleteUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        var userExists = await knex("users").where({ id }).first();
+
+        if (!userExists) {
+            return res.status(401).send({ message: "Usuário não encontrado." });
+        }
+        await knex.select().table("user_track").where({ user_id: id }).del();
+        await knex("users").where({ id }).del();
+
+        return res
+            .status(201)
+            .json({ message: "Usuário deletado com sucesso!" });
+    } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -130,4 +154,5 @@ module.exports = {
     UpdateUser,
     SignToTrack,
     GetUserTracks,
+    DeleteUser,
 };

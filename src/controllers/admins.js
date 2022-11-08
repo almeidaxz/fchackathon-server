@@ -74,6 +74,9 @@ const AdminAddTrackContent = async (req, res) => {
                 .json({ message: "Informe todos os dados obrigatórios" });
         }
 
+        const trackExists = await knex('tracks').where({ name }).first();
+        if (!trackExists) return res.status(404).json({ message: "Triha não cadastrada." });
+
         if (
             (type === "artigo" && !description) ||
             (type === "artigo" && !url_image)

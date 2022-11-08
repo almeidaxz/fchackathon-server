@@ -21,7 +21,7 @@ const errorPassword = {
 const userSignUpSchema = joi.object({
     name: joi.string().min(4).required().messages(errorName),
     email: joi.string().email().required().messages(errorEmail),
-    password: joi.string().min(8).required().messages(errorPassword),
+    password: joi.string().min(8).trim().required().messages(errorPassword),
 });
 
 module.exports = {

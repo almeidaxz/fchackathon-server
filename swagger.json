@@ -1,0 +1,691 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "tittle": "Orange Evolution V2.0",
+        "description": "Documentation from Orange Evolution api",
+        "version": "1.0.0"
+    },
+    "basePath": "/",
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "paths": {
+        "/signup": {
+            "post": {
+                "tags": ["User"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "João da Silva",
+                                    "email": "joaodasilva@email.com",
+                                    "password": "12345678"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "E-mail informado já cadastrado."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    },
+                    "201": {
+                        "description": "Cadastro realizado com sucesso!"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["User"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "email": "joaodasilva@email.com",
+                                    "password": "12345678"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "integer"
+                                        },
+                                        "token": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Autenticado com sucesso",
+                                        "logedUser": {
+                                            "id": 6,
+                                            "name": "Afonso Rodrigues",
+                                            "email": "email4@gmail.com"
+                                        },
+                                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsNEBnbWFpbC5jb20iLCJpYXQiOjE2Njc3ODY0MDEsImV4cCI6MTY2NzgwNDQwMX0.RqZkMx9nWOqA1d0OmVh3DxdmzpqUDz-azMfhWL70JUI"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Falha na autenticação"
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/user/{id}/update": {
+            "put": {
+                "tags": ["User"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "João da Silva",
+                                    "email": "joaodasilva@email.com",
+                                    "password": "12345678"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cadastro atualizado com sucesso!"
+                    },
+                    "401": {
+                        "description": "Usuário não existe!"
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/user/delete/{id}": {
+            "delete": {
+                "tags": ["User"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário deletado com sucesso!"
+                    },
+                    "401": {
+                        "description": "Usuário não encontrado."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/user/sign_track/{track_id}": {
+            "post": {
+                "tags": ["User"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "track_id",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "example": {
+                                    "user_id": 7
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Trilha iniciada!"
+                    },
+                    "404": {
+                        "description": "Trilha não encontrada."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/user/tracks/{id}": {
+            "get": {
+                "tags": ["User"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "user_id": {
+                                            "type": "integer"
+                                        },
+                                        "track_id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "example": [
+                                        {
+                                            "id": 1,
+                                            "name": "DEV",
+                                            "status": "10",
+                                            "user_id": 3,
+                                            "track_id": 1
+                                        },
+                                        {
+                                            "id": 2,
+                                            "name": "UX",
+                                            "status": "50",
+                                            "user_id": 3,
+                                            "track_id": 2
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nenhuma trilha cadastrada!"
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/user/{id}/contents": {
+            "get": {
+                "tags": ["User"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "duration": {
+                                            "type": "string"
+                                        },
+                                        "complete": {
+                                            "type": "boolean"
+                                        },
+                                        "url": {
+                                            "type": "string"
+                                        },
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "url_image": {
+                                            "type": "string"
+                                        },
+                                        "track_id": {
+                                            "type": "integer"
+                                        },
+                                        "content_id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "example": [
+                                        {
+                                            "id": 4,
+                                            "name": "programação",
+                                            "type": "video",
+                                            "duration": "1:20",
+                                            "complete": false,
+                                            "url": "youtube.com",
+                                            "description": "video bla bla bla",
+                                            "url_image": "image.com",
+                                            "track_id": 1,
+                                            "content_id": 1
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nenhum conteúdo cadastrado!"
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/user/all_tracks": {
+            "get": {
+                "tags": ["User"],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "status": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "tracks": [
+                                            {
+                                                "id": 2,
+                                                "name": "UX",
+                                                "status": "50"
+                                            },
+                                            {
+                                                "id": 1,
+                                                "name": "DEV",
+                                                "status": "30"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Nenhuma trilha cadastrada!"
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/admin/signup": {
+            "post": {
+                "tags": ["Admin"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "João da Silva",
+                                    "email": "joaodasilva@email.com",
+                                    "password": "12345678"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "E-mail informado já cadastrado."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    },
+                    "201": {
+                        "description": "Cadastro realizado com sucesso!"
+                    }
+                }
+            }
+        },
+        "/admin/login": {
+            "post": {
+                "tags": ["Admin"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "email": "joaodasilva@email.com",
+                                    "password": "12345678"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "integer"
+                                        },
+                                        "token": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "example": {
+                                        "message": "Autenticado com sucesso",
+                                        "logedUser": {
+                                            "id": 6,
+                                            "name": "Afonso Rodrigues",
+                                            "email": "email4@gmail.com"
+                                        },
+                                        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsNEBnbWFpbC5jb20iLCJpYXQiOjE2Njc3ODY0MDEsImV4cCI6MTY2NzgwNDQwMX0.RqZkMx9nWOqA1d0OmVh3DxdmzpqUDz-azMfhWL70JUI"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuário não encontrado."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/admin/add_track": {
+            "post": {
+                "tags": ["Admin"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Desenvolvedor BackEnd",
+                                    "status": "00"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Trilha cadastrada com sucesso."
+                    },
+                    "400": {
+                        "description": "Trilha já existente || Informe o nome da trilha."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/admin/add_content": {
+            "post": {
+                "tags": ["Admin"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "duration": {
+                                        "type": "string"
+                                    },
+                                    "complete": {
+                                        "type": "boolean"
+                                    },
+                                    "url": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "url_image": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Introdução",
+                                    "type": "video",
+                                    "duration": "5:30",
+                                    "complete": false,
+                                    "url": "youtube.com",
+                                    "description": "video bla bla bla",
+                                    "url_image": "image.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Conteúdo cadastrado com sucesso."
+                    },
+                    "400": {
+                        "description": "Informe todos os dados obrigatórios || Uma descrição e a url da imagem são obrigatórias caso o tipo seja artigo."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/admin/del_track/{id}": {
+            "delete": {
+                "tags": ["Admin"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Trilha deletada com sucesso!"
+                    },
+                    "401": {
+                        "description": "Trilha não encontrado."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        },
+        "/admin/del_content/{id}": {
+            "delete": {
+                "tags": ["Admin"],
+                "security": [{ "bearerAuth": [] }],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Conteúdo deletada com sucesso!"
+                    },
+                    "401": {
+                        "description": "Conteúdo não encontrado."
+                    },
+                    "500": {
+                        "description": "Erro no servidor."
+                    }
+                }
+            }
+        }
+    }
+}

@@ -30,7 +30,7 @@ const { userSignUpSchema } = require("./schemas/userSignUpSchema");
 
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
 routes.post("/login", Login);
-routes.put("/user/update", validateEmailUser, UpdateUser);
+routes.put("/user/:id/update", UpdateUser);
 routes.delete("/user/delete/:id", DeleteUser);
 routes.post("/user/sign_track/:track_id", SignToTrack);
 routes.get("/user/tracks/:id", GetUserTracks);

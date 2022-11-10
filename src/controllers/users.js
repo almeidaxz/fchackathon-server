@@ -56,7 +56,8 @@ const Login = async (req, res) => {
 };
 
 const UpdateUser = async (req, res) => {
-    const { id, name, email, password } = req.body;
+    const { id } = req.params;
+    const { name, email, password } = req.body;
 
     try {
         var user = await knex("users").where({ id }).first();
@@ -70,7 +71,7 @@ const UpdateUser = async (req, res) => {
             await knex("users").where({ id }).update({ name, email });
 
             return res
-                .status(201)
+                .status(200)
                 .json({ message: "Cadastro atualizado com sucesso!" });
         }
         var encryptedPassword = await bcrypt.hash(password, 10);
@@ -79,7 +80,7 @@ const UpdateUser = async (req, res) => {
             .update({ name, email, password: encryptedPassword });
 
         return res
-            .status(201)
+            .status(200)
             .json({ message: "Cadastro atualizado com sucesso!" });
     } catch (error) {
         return res.status(500).json({ message: "Erro no servidor." });
@@ -99,7 +100,7 @@ const DeleteUser = async (req, res) => {
         await knex("users").where({ id }).del();
 
         return res
-            .status(201)
+            .status(200)
             .json({ message: "Usuário deletado com sucesso!" });
     } catch (error) {
         console.log(error);
@@ -120,7 +121,7 @@ const SignToTrack = async (req, res) => {
 
         await knex("user_track").insert({ track_id, user_id }).returning("*");
 
-        return res.status(201).json({ message: "Trilha iniciada!" });
+        return res.status(200).json({ message: "Trilha iniciada!" });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });

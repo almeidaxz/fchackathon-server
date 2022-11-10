@@ -151,17 +151,13 @@ const GetUserTracks = async (req, res) => {
 const GetContentsToTrack = async (req, res) => {
     const { id } = req.params;
     try {
-        const contents = await knex
-            .select("*")
-            .from("contents")
-            .join("track_content", function () {
-                this.on("contents.id", "=", "content_id").onIn("track_id", id);
-            });
+        const contents = await knex('contents').where({ track_id: id });
+
         if (!contents)
             return res
                 .status(404)
                 .json({ message: "Nenhum conteúdo cadastrado!" });
-        return res.status(200).send(contents);
+        return res.status(200).json(contents);
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });

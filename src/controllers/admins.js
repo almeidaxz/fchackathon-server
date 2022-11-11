@@ -64,16 +64,10 @@ const AdminAddTrack = async (req, res) => {
 };
 
 const AdminAddTrackContent = async (req, res) => {
-    const { creator,
-        description,
-        duration,
-        name,
-        subtitle,
-        track_id,
-        type,
-        url,
-        url_image } = req.body;
 
+    const { track_id, name, type, duration, creator, url, description, subtitle, url_image } =
+        req.body;
+        
     try {
         if (!name || !type || !duration || !url) {
             return res
@@ -81,7 +75,9 @@ const AdminAddTrackContent = async (req, res) => {
                 .json({ message: "Informe todos os dados obrigatórios" });
         }
 
+
         const trackExists = await knex('tracks').where({ id: track_id }).first();
+
         if (!trackExists) return res.status(404).json({ message: "Triha não cadastrada." });
 
         if (
@@ -99,12 +95,13 @@ const AdminAddTrackContent = async (req, res) => {
                 creator,
                 description,
                 duration,
+                track_id,
                 name,
                 subtitle,
-                track_id,
                 type,
                 url,
                 url_image
+                subtitle
             })
             .returning("*");
 
@@ -184,7 +181,6 @@ const DeleteContent = async (req, res) => {
             .status(201)
             .json({ message: "Conteúdo deletada com sucesso!" });
     } catch (error) {
-        console.log(error);
         console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }

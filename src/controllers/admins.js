@@ -64,8 +64,15 @@ const AdminAddTrack = async (req, res) => {
 };
 
 const AdminAddTrackContent = async (req, res) => {
-    const { name, type, duration, complete, url, description, url_image } =
-        req.body;
+    const { creator,
+        description,
+        duration,
+        name,
+        subtitle,
+        track_id,
+        type,
+        url,
+        url_image } = req.body;
 
     try {
         if (!name || !type || !duration || !url) {
@@ -74,7 +81,7 @@ const AdminAddTrackContent = async (req, res) => {
                 .json({ message: "Informe todos os dados obrigatórios" });
         }
 
-        const trackExists = await knex('tracks').where({ name }).first();
+        const trackExists = await knex('tracks').where({ id: track_id }).first();
         if (!trackExists) return res.status(404).json({ message: "Triha não cadastrada." });
 
         if (
@@ -89,13 +96,15 @@ const AdminAddTrackContent = async (req, res) => {
 
         await knex("contents")
             .insert({
-                name,
-                type,
-                duration,
-                complete,
-                url,
+                creator,
                 description,
-                url_image,
+                duration,
+                name,
+                subtitle,
+                track_id,
+                type,
+                url,
+                url_image
             })
             .returning("*");
 

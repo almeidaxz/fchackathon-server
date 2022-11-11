@@ -35,7 +35,7 @@ routes.delete("/user/delete/:id", DeleteUser);
 routes.post("/user/sign_track/:track_id", SignToTrack);
 routes.get("/user/tracks/:id", GetUserTracks);
 routes.get("/user/all_tracks", GetTracks);
-routes.get("/user/:id/contents", GetContentsToTrack);
+routes.get("/user/:track_id/contents", GetContentsToTrack);
 routes.post("/admin/signup", validateAdminData(userSignUpSchema), AdminSignUp); //DEVELOPMENT ONLY
 routes.post("/admin/login", AdminLogin);
 routes.post("/admin/add_track", AdminAddTrack);

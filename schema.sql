@@ -53,3 +53,18 @@ ALTER TABLE
     track_content ADD CONSTRAINT track_content_content_id_foreign FOREIGN KEY(content_id) REFERENCES contents(id);
 
 ALTER TABLE user_track DROP COLUMN id;
+
+/* ATUALIZAÇÃO NA MODELAGEM DO BD */
+CREATE TABLE IF NOT EXISTS contents (
+    id SERIAL PRIMARY KEY,
+  	track_id INTEGER NOT NULL REFERENCES tracks(id),
+    name TEXT NOT NULL,
+    type TEXT NOT NULL,
+    duration TEXT NULL,
+    complete BOOLEAN NOT NULL,
+    url TEXT NOT NULL,
+    description TEXT,
+    url_image TEXT
+);
+
+ALTER TABLE tracks DROP COLUMN status;

@@ -159,8 +159,8 @@ const GetUserTracks = async (req, res) => {
 const GetContentsToTrack = async (req, res) => {
     const { track_id } = req.params;
     try {
-        const contents = await knex('contents').where({ track_id })
 
+        const contents = await knex('contents').where({ track_id });
         if (!contents)
             return res
                 .status(404)

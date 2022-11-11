@@ -142,7 +142,7 @@ const GetUserTracks = async (req, res) => {
         const tracks = await knex
             .select("*")
             .from("tracks")
-            .join("user_track", function () {
+            .join("user_tracks", function () {
                 this.on("tracks.id", "=", "track_id").onIn("user_id", id);
             });
         if (tracks.length < 1)

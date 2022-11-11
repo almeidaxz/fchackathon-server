@@ -101,7 +101,6 @@ const AdminAddTrackContent = async (req, res) => {
                 type,
                 url,
                 url_image
-                subtitle
             })
             .returning("*");
 

@@ -16,55 +16,30 @@ CREATE TABLE IF NOT EXISTS admins (
 
 CREATE TABLE IF NOT EXISTS tracks (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    status TEXT NOT NULL
+    name TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS contents (
     id SERIAL PRIMARY KEY,
+    track_id INTEGER REFERENCES track(id) NOT NULL;
     name TEXT NOT NULL,
     type TEXT NOT NULL,
     duration TEXT NULL,
-    complete BOOLEAN NOT NULL,
     url TEXT NOT NULL,
     description TEXT,
-    url_image TEXT
+    url_image TEXT,
+    creator TEXT NOT NULL,
+    subtitle TEXT NOT NULL,
 );
 
-CREATE TABLE user_track (
-    id INTEGER NOT NULL,
+CREATE TABLE user_tracks (
     user_id INTEGER NOT NULL,
     track_id INTEGER NOT NULL
 );
 
-CREATE TABLE track_content (
-    id INTEGER NOT NULL,
-    track_id INTEGER NOT NULL,
-    content_id INTEGER NOT NULL
-);
-
-ALTER TABLE
-    user_track ADD CONSTRAINT user_track_user_id_foreign FOREIGN KEY (user_id) REFERENCES users(id);
-ALTER TABLE
-    user_track ADD CONSTRAINT user_track_track_id_foreign FOREIGN KEY(track_id) REFERENCES tracks(id);
-ALTER TABLE
-    track_content ADD CONSTRAINT track_content_track_id_foreign FOREIGN KEY(track_id) REFERENCES tracks(id);
-ALTER TABLE
-    track_content ADD CONSTRAINT track_content_content_id_foreign FOREIGN KEY(content_id) REFERENCES contents(id);
-
-ALTER TABLE user_track DROP COLUMN id;
-
-/* ATUALIZAÇÃO NA MODELAGEM DO BD */
-ALTER TABLE tracks DROP COLUMN status;
-
-ALTER TABLE contents DROP COLUMN complete;
-
-ALTER TABLE contents ADD creator TEXT NOT NULL;
-
-ALTER TABLE contents ADD COLUMN subtitle TEXT NULL;
-
 CREATE TABLE IF NOT EXISTS user_contents (
-  	user_id INTEGER NOT NULL REFERENCES user(id),
+  	user_id INTEGER NOT NULL REFERENCES users(id),
   	content_id INTEGER NOT NULL REFERENCES contents(id),
+    track_id INTEGER NOT NULL REFERENCES tracks(id),
     complete BOOLEAN NOT NULL
 );

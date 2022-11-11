@@ -121,6 +121,14 @@ const SignToTrack = async (req, res) => {
 
         await knex("user_track").insert({ track_id, user_id }).returning("*");
 
+        const trackContent = await knex('contents').where({ track_id }).debug();
+
+        if (trackContent.length) {
+            trackContent.map(async (item) => {
+                await knex("user_contents").insert({ track_id, user_id }).returning("*");
+            });
+        }
+
         return res.status(200).json({ message: "Trilha iniciada!" });
     } catch (error) {
         console.log(error);

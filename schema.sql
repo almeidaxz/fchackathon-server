@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS contents (
 );
 
 CREATE TABLE user_tracks (
-    user_id INTEGER NOT NULL,
-    track_id INTEGER NOT NULL
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    track_id INTEGER NOT NULL REFERENCES tracks(id)
 );
 
 CREATE TABLE IF NOT EXISTS user_contents (

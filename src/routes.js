@@ -34,13 +34,13 @@ const { userSignUpSchema } = require("./schemas/userSignUpSchema");
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
 routes.post("/login", Login);
 routes.post("/user/sign_track/:track_id", SignToTrack);
-routes.post("/user/:user_id/contents", GetUserContents);
+routes.get("/user/:user_id/contents", GetUserContents);
 routes.put("/user/:id/update", UpdateUser);
 routes.put("/user/content/complete", CheckContentAsComplete);
 routes.delete("/user/delete/:id", DeleteUser);
 routes.get("/user/tracks/:id", GetUserTracks);
 routes.get("/user/all_tracks", GetTracks);
-routes.get("/user/:track_id/contents", GetContentsToTrack);
+routes.get("/track/:track_id/contents", GetContentsToTrack);
 routes.get("/user/:user_id/:track_id/progress", GetUserProgress);
 routes.post("/admin/signup", validateAdminData(userSignUpSchema), AdminSignUp); //DEVELOPMENT ONLY
 routes.post("/admin/login", AdminLogin);

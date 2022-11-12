@@ -143,6 +143,7 @@ const SignToTrack = async (req, res) => {
 
 const GetUserTracks = async (req, res) => {
     const { id } = req.params;
+    
     try {
         const tracks = await knex
             .select("*")
@@ -167,8 +168,9 @@ const GetUserContents = async (req, res) => {
     if (!user_id) return res.status(400).json({ message: "O id do usuário deve ser informado." });
 
     try {
-        const userContents = await knex('user_contents').where({ user_id });
+        const userContents = await knex('user_contents').where({ user_id }).debug();
 
+        console.log(userContents);
         return res.status(200).json(userContents);
     } catch (error) {
         console.log(error);

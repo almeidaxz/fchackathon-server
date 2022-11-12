@@ -96,7 +96,7 @@ const DeleteUser = async (req, res) => {
         if (!userExists) {
             return res.status(401).send({ message: "Usuário não encontrado." });
         }
-        await knex.select().table("user_track").where({ user_id: id }).del();
+        await knex.select().table("user_tracks").where({ user_id: id }).del();
         await knex("users").where({ id }).del();
 
         return res
@@ -116,16 +116,21 @@ const SignToTrack = async (req, res) => {
         const selectedTrack = await knex("tracks")
             .where({ id: track_id })
             .first();
-        if (!selectedTrack)
+        if (!selectedTrack) {
             return res.status(404).json({ message: "Trilha não encontrada." });
+        }
 
-        await knex("user_track").insert({ track_id, user_id }).returning("*");
+        const userSigned = await knex('user_tracks').where({ track_id, user_id }).first();
 
-        const trackContent = await knex('contents').where({ track_id }).debug();
+        if (userSigned) return res.status(404).json({ message: "Trilha já iniciada" });
+
+        await knex("user_tracks").insert({ track_id, user_id });
+
+        const trackContent = await knex('contents').where({ track_id });
 
         if (trackContent.length) {
             trackContent.map(async (item) => {
-                await knex("user_contents").insert({ track_id, user_id }).returning("*");
+                await knex("user_contents").insert({ track_id, user_id, content_id: item.id, complete: false }).returning("*");
             });
         }
 
@@ -155,6 +160,21 @@ const GetUserTracks = async (req, res) => {
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
+
+const GetUserContents = async (req, res) => {
+    const { user_id } = req.params;
+
+    if (!user_id) return res.status(400).json({ message: "O id do usuário deve ser informado." });
+
+    try {
+        const userContents = await knex('user_contents').where({ user_id });
+
+        return res.status(200).json(userContents);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+}
 
 const GetContentsToTrack = async (req, res) => {
     const { track_id } = req.params;
@@ -186,6 +206,33 @@ const GetTracks = async (req, res) => {
     }
 };
 
+const GetUserProgress = async (req, res) => {
+    const { track_id, user_id } = req.params;
+
+    try {
+        const trackContentForUser = await knex('user_contents').where({ user_id, track_id });
+        if (!trackContentForUser) return res.status(404).json({ message: "Nenhum conteúdo encontrado" });
+
+        return res.status(200).json(trackContentForUser);
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+}
+
+const CheckContentAsComplete = async (req, res) => {
+    const { user_id, content_id, complete } = req.body;
+
+    try {
+        const check = await knex('user_contents').update({ complete }).where({ user_id, content_id }).returning('*');
+
+        return res.status(200).json({ message: "Atualizado com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+}
+
 module.exports = {
     SignUp,
     Login,
@@ -195,4 +242,7 @@ module.exports = {
     DeleteUser,
     GetContentsToTrack,
     GetTracks,
+    CheckContentAsComplete,
+    GetUserProgress,
+    GetUserContents
 };

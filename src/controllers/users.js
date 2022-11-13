@@ -170,7 +170,6 @@ const GetUserContents = async (req, res) => {
     try {
         const userContents = await knex('user_contents').where({ user_id }).debug();
 
-        console.log(userContents);
         return res.status(200).json(userContents);
     } catch (error) {
         console.log(error);
@@ -217,7 +216,7 @@ const GetUserProgress = async (req, res) => {
 
         return res.status(200).json(trackContentForUser);
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 }

@@ -10,12 +10,7 @@ const app = express();
 
 const port = process.env.PGPORT || 3000;
 
-app.use(cors({
-    AccessControlAllowOrigin: '*',
-    AccessControlAllowMethods: 'GET, POST, PUT, DELETE, OPTIONS',
-    AccessControlAllowHeaders: 'Content-Type, Authorization, Content-Length, X-Requested-With',
-    AccessControlAllowCredentials: true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(routes);
 

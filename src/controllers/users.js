@@ -27,7 +27,7 @@ const Login = async (req, res) => {
     try {
         const userExists = await knex("users").where({ email }).first();
         if (!userExists) {
-            return res.status(401).send({ message: "Usuário não encontrado. Cadastre-se aqui!" });
+            return res.status(401).send({ message: "Usuário não cadastrado." });
         }
 
         const decryptedPassword = await bcrypt.compare(password, userExists.password);

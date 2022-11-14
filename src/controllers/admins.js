@@ -41,7 +41,7 @@ const AdminLogin = async (req, res) => {
 };
 
 const AdminAddTrack = async (req, res) => {
-    const { name, status } = req.body;
+    const { name } = req.body;
 
     try {
         const trackExists = await knex("tracks").where({ name }).first();
@@ -53,7 +53,7 @@ const AdminAddTrack = async (req, res) => {
                 .status(400)
                 .json({ message: "Informe o nome da trilha." });
 
-        await knex("tracks").insert({ name, status }).returning("*");
+        await knex("tracks").insert({ name }).returning("*");
 
         return res
             .status(201)
@@ -108,26 +108,6 @@ const AdminAddTrackContent = async (req, res) => {
         return res
             .status(201)
             .json({ message: "Conteúdo cadastrado com sucesso." });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Erro no servidor." });
-    }
-};
-
-//DEVELOPMENT ONLY
-const AdminSignUp = async (req, res) => {
-    const { name, email, password } = req.body;
-
-    try {
-        const encryptedPassword = await bcrypt.hash(password, 10);
-
-        await knex("admins")
-            .insert({ name, email, password: encryptedPassword })
-            .returning("*");
-
-        return res
-            .status(201)
-            .json({ message: "Cadastro realizado com sucesso!" });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });

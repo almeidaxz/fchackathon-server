@@ -7,6 +7,7 @@ const knex = require('knex')({
     user: process.env.PGUSER,
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE,
+    port: process.env.PGPORT,
     ssl: { rejectUnauthorized: false }
   }
 })

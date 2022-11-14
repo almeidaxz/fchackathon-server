@@ -168,7 +168,6 @@ const DeleteContent = async (req, res) => {
 };
 
 module.exports = {
-    AdminSignUp,
     AdminLogin,
     AdminAddTrack,
     AdminAddTrackContent,

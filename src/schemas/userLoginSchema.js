@@ -12,7 +12,7 @@ const errorPassword = {
 
 const userLoginSchema = joi.object({
     email: joi.string().email().required().messages(errorEmail),
-    password: joi.string().required().messages(errorPassword),
+    password: joi.string().required().trim().messages(errorPassword),
 });
 
 module.exports = {

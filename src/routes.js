@@ -15,7 +15,6 @@ const {
     GetUserContents
 } = require("./controllers/users");
 const {
-    AdminSignUp,
     AdminLogin,
     AdminAddTrack,
     AdminAddTrackContent,
@@ -28,7 +27,6 @@ const {
     loginOptional,
     validateEmailUser,
 } = require("./middlewares/users");
-const { validateAdminData } = require("./middlewares/admins");
 const { userSignUpSchema, userLoginSchema } = require("./schemas/userSignUpSchema");
 
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);

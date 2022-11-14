@@ -19,7 +19,7 @@ const errorPassword = {
 };
 
 const userSignUpSchema = joi.object({
-    name: joi.string().min(4).required().messages(errorName),
+    name: joi.string().min(3).pattern(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u).required().messages(errorName),
     email: joi.string().email().required().messages(errorEmail),
     password: joi.string().min(8).trim().required().messages(errorPassword),
 });

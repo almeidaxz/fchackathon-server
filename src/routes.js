@@ -1,6 +1,5 @@
 const express = require("express");
 const routes = express.Router();
-const cors = require('cors');
 
 const {
     SignUp,
@@ -32,7 +31,6 @@ const {
 const { validateAdminData } = require("./middlewares/admins");
 const { userSignUpSchema } = require("./schemas/userSignUpSchema");
 
-routes.use(cors());
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
 routes.post("/login", Login);
 routes.post("/user/sign_track/:track_id", SignToTrack);

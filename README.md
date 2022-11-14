@@ -14,6 +14,10 @@
 
 <span>Em breve documentação completa.</span>
 
+<h4>Repositório do Front: https://github.com/afonsonrodrigues/fchackathon-front</h4>
+<h4>Deploy do Back: https://squad27-server.up.railway.app/</h4>
+<h4>Deploy do Front: https://squad27-app-afonsonrodrigues.vercel.app/</h4>
+
 <h5>
     Você pode verificar a documentação Swagger disponível na raíz do projeto.
 </h5>

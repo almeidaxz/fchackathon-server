@@ -11,11 +11,9 @@ const app = express();
 const port = process.env.PGPORT || 3000;
 
 app.use(express.json());
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+app.use(cors({
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+}));
 app.use(routes);
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));

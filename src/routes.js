@@ -27,7 +27,8 @@ const {
     loginOptional,
     validateEmailUser,
 } = require("./middlewares/users");
-const { userSignUpSchema, userLoginSchema } = require("./schemas/userSignUpSchema");
+const { userLoginSchema } = require("./schemas/userLoginSchema");
+const { userSignUpSchema } = require("./schemas/userSignUpSchema");
 
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
 routes.post("/login", validateUserData(userLoginSchema), Login);

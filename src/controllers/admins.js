@@ -35,6 +35,7 @@ const AdminLogin = async (req, res) => {
             token: token,
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -128,6 +129,7 @@ const AdminSignUp = async (req, res) => {
             .status(201)
             .json({ message: "Cadastro realizado com sucesso!" });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };

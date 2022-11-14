@@ -7,14 +7,11 @@ const validateUserData = (joiSchema) => async (req, res, next) => {
     try {
         await joiSchema.validateAsync(req.body);
 
-        if (req.url === "/signup") {
-            const existingEmail = await knex("users").where({ email }).first();
-
-            if (existingEmail)
-                return res
-                    .status(400)
-                    .json({ message: "E-mail informado já cadastrado." });
-        }
+        const existingEmail = await knex("users").where({ email }).first();
+        if (existingEmail)
+            return res
+                .status(400)
+                .json({ message: "E-mail informado já cadastrado." });
 
         next();
     } catch (error) {

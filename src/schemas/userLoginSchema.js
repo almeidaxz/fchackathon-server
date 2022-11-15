@@ -2,7 +2,8 @@ const joi = require("joi");
 
 const errorEmail = {
     "any.required": "O E-mail deve ser preenchido.",
-    "string.empty": "O E-mail deve ser preenchido."
+    "string.empty": "O E-mail deve ser preenchido.",
+    "string.email": "Informe um e-mail válido."
 };
 
 const errorPassword = {

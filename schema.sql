@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS tracks (
 
 CREATE TABLE IF NOT EXISTS contents (
     id SERIAL PRIMARY KEY,
-    track_id INTEGER REFERENCES track(id) NOT NULL,
+    track_id INTEGER REFERENCES tracks(id) NOT NULL,
     name TEXT NOT NULL,
     type TEXT NOT NULL,
     duration TEXT NOT NULL,

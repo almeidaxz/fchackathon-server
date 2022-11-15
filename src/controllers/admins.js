@@ -24,7 +24,7 @@ const AdminLogin = async (req, res) => {
         const token = jwt.sign(
             { email: adminExists.email },
             process.env.JWT_KEY,
-            { expiresIn: "5h" }
+            { expiresIn: "1h" }
         );
 
         const { password: _, ...logedAdmin } = adminExists;
@@ -68,7 +68,7 @@ const AdminAddTrackContent = async (req, res) => {
 
     const { track_id, name, type, duration, creator, url, description, subtitle, url_image } =
         req.body;
-        
+
     try {
         if (!name || !type || !duration || !url) {
             return res
@@ -117,19 +117,21 @@ const AdminAddTrackContent = async (req, res) => {
 const DeleteTrack = async (req, res) => {
     const { id } = req.params;
 
+    console.log(id);
+
     try {
         var trackExists = await knex("tracks").where({ id }).first();
-
         if (!trackExists) {
             return res.status(401).send({ message: "Trilha não encontrado." });
         }
-        await knex.select().table("user_track").where({ track_id: id }).del();
-        await knex
-            .select()
-            .table("track_content")
+
+        await knex("user_contents").where({ track_id: id }).del();
+        await knex("contents")
             .where({ track_id: id })
             .del();
         await knex("tracks").where({ id }).del();
+        await knex("user_tracks").where({ track_id: id }).del();
+
 
         return res
             .status(201)
@@ -167,10 +169,83 @@ const DeleteContent = async (req, res) => {
     }
 };
 
+const UpdateTrack = async (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    try {
+        if (!name) {
+            return res
+                .status(400)
+                .json({ message: "Informe o novo nome da trilha." });
+        }
+
+        await knex('tracks').update({ name }).where({ id }).returning('*');
+
+        return res.status(200).json({ message: "Trilha atualizada com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+}
+
+const UpdateContent = async (req, res) => {
+    const { id } = req.params;
+    const { track_id, name, type, duration, url, description, url_image, creator, subtitle } = req.body;
+
+    try {
+        if (!name || !track_id || !type || !duration || !creator || !subtitle, !url) {
+            return res
+                .status(400)
+                .json({ message: "Informe todos os dados obrigatórios." });
+        }
+
+        if (type !== 'Video' && !url_image || type !== 'Video' && !subtitle || type !== 'Video' && !description) {
+            return res
+                .status(400)
+                .json({ message: "A URL de uma imagem, descrição e subtítulo são necessários caso o conteúdo não seja em vídeo" });
+        }
+
+        const existingTrack = await knex('tracks').where({ id: track_id }).first();
+        if (!existingTrack) {
+            return res
+                .status(404)
+                .json({ message: "Trilha informada não cadastrada." });
+        }
+
+        await knex('contents').update({ track_id, name, type, duration, url, description, url_image, creator, subtitle }).where({ id }).returning('*');
+
+        return res.status(200).json({ message: "Conteúdo atualizada com sucesso!" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+}
+
+const GetAllContent = async (req, res) => {
+    try {
+        const allContent = await knex('contents');
+        if (!allContent) {
+            return res
+                .status(404)
+                .json({ message: "Nenhum conteúdo cadastrado" });
+        }
+
+        return res.status(200).json(allContent);
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+}
+
 module.exports = {
     AdminLogin,
     AdminAddTrack,
     AdminAddTrackContent,
     DeleteContent,
     DeleteTrack,
+    UpdateTrack,
+    UpdateContent,
+    GetAllContent
 };

@@ -14,9 +14,9 @@
 
 <span>Em breve documentação completa.</span>
 
-<h3>Repositório do Front: https://github.com/afonsonrodrigues/fchackathon-front</h4>
-<h3>Deploy do Back: https://squad27-evolution.herokuapp.com/</h4>
-<h3>Deploy do Front: https://squad27-app-afonsonrodrigues.vercel.app/</h4>
+<h2>Repositório do Front: https://github.com/afonsonrodrigues/fchackathon-front</h4>
+<h2>Deploy do Back: https://squad27-evolution.herokuapp.com/</h4>
+<h2>Deploy do Front: https://squad27-app-afonsonrodrigues.vercel.app/</h4>
 
 <h4>
     Você pode verificar a documentação Swagger disponível na raíz do projeto.

@@ -256,7 +256,7 @@ module.exports = {
     AdminAddTrackContent,
     DeleteContent,
     DeleteTrack,
-    AdminSignUp
+    AdminSignUp,
     UpdateTrack,
     UpdateContent,
     GetAllContent

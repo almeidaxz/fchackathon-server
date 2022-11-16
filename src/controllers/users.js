@@ -16,7 +16,6 @@ const SignUp = async (req, res) => {
             .status(201)
             .json({ message: "Cadastro realizado com sucesso!" });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -52,7 +51,6 @@ const Login = async (req, res) => {
             token: token,
         });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -85,7 +83,6 @@ const UpdateUser = async (req, res) => {
             .status(200)
             .json({ message: "Cadastro atualizado com sucesso!" });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -106,7 +103,6 @@ const DeleteUser = async (req, res) => {
             .status(200)
             .json({ message: "Usuário deletado com sucesso!" });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -139,7 +135,6 @@ const SignToTrack = async (req, res) => {
 
         return res.status(200).json({ message: "Trilha iniciada!" });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -160,7 +155,6 @@ const GetUserTracks = async (req, res) => {
                 .json({ message: "Nenhuma trilha cadastrada!" });
         return res.status(200).send(tracks);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -175,7 +169,6 @@ const GetUserContents = async (req, res) => {
 
         return res.status(200).json(userContents);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 }
@@ -191,7 +184,6 @@ const GetContentsToTrack = async (req, res) => {
                 .json({ message: "Nenhum conteúdo cadastrado!" });
         return res.status(200).json(contents);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -205,7 +197,6 @@ const GetTracks = async (req, res) => {
                 .json({ message: "Nenhuma trilha cadastrada!" });
         return res.status(200).send({ tracks });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -219,7 +210,6 @@ const GetUserProgress = async (req, res) => {
 
         return res.status(200).json(trackContentForUser);
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 }
@@ -232,7 +222,6 @@ const CheckContentAsComplete = async (req, res) => {
 
         return res.status(200).json({ message: "Atualizado com sucesso!" });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 }

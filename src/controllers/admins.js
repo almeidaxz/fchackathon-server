@@ -165,6 +165,25 @@ const DeleteContent = async (req, res) => {
     }
 };
 
+
+const AdminSignUp = async (req, res) => {
+    const { name, email, password } = req.body;
+
+    try {
+        const encryptedPassword = await bcrypt.hash(password, 10);
+
+        await knex("admins")
+            .insert({ name, email, password: encryptedPassword })
+            .returning("*");
+
+        return res
+            .status(201)
+            .json({ message: "Cadastro realizado com sucesso!" });
+    } catch (error) {
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
 const UpdateTrack = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
@@ -237,6 +256,7 @@ module.exports = {
     AdminAddTrackContent,
     DeleteContent,
     DeleteTrack,
+    AdminSignUp
     UpdateTrack,
     UpdateContent,
     GetAllContent

@@ -218,7 +218,7 @@ const CheckContentAsComplete = async (req, res) => {
     const { user_id, content_id, complete } = req.body;
 
     try {
-        const check = await knex('user_contents').update({ complete }).where({ user_id, content_id }).returning('*');
+        await knex('user_contents').update({ complete }).where({ user_id, content_id }).returning('*');
 
         return res.status(200).json({ message: "Atualizado com sucesso!" });
     } catch (error) {

@@ -68,7 +68,7 @@ const AdminAddTrackContent = async (req, res) => {
 
     const { track_id, name, type, duration, creator, url, description, subtitle, url_image } =
         req.body;
-        
+
     try {
         if (!name || !type || !duration || !url) {
             return res
@@ -167,6 +167,24 @@ const DeleteContent = async (req, res) => {
     }
 };
 
+const AdminSignUp = async (req, res) => {
+    const { name, email, password } = req.body;
+
+    try {
+        const encryptedPassword = await bcrypt.hash(password, 10);
+
+        await knex("admins")
+            .insert({ name, email, password: encryptedPassword })
+            .returning("*");
+
+        return res
+            .status(201)
+            .json({ message: "Cadastro realizado com sucesso!" });
+    } catch (error) {
+        return res.status(500).json({ message: "Erro no servidor." });
+    }
+};
+
 module.exports = {
     AdminSignUp,
     AdminLogin,
@@ -174,4 +192,5 @@ module.exports = {
     AdminAddTrackContent,
     DeleteContent,
     DeleteTrack,
+    AdminSignUp
 };

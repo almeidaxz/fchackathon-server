@@ -15,12 +15,12 @@ const {
     GetUserContents
 } = require("./controllers/users");
 const {
-    AdminSignUp,
     AdminLogin,
     AdminAddTrack,
     AdminAddTrackContent,
     DeleteContent,
     DeleteTrack,
+    AdminSignUp
 } = require("./controllers/admins");
 const {
     validateUserData,
@@ -32,6 +32,7 @@ const { validateAdminData } = require("./middlewares/admins");
 const { userSignUpSchema, userLoginSchema } = require("./schemas/userSignUpSchema");
 
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
+routes.post("/admin", AdminSignUp);
 routes.post("/login", validateUserData(userLoginSchema), Login);
 routes.post("/user/sign_track/:track_id", SignToTrack);
 routes.get("/user/:user_id/contents", GetUserContents);

@@ -35,7 +35,7 @@ const AdminLogin = async (req, res) => {
             token: token,
         });
     } catch (error) {
-        console.log(error);
+
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -59,7 +59,7 @@ const AdminAddTrack = async (req, res) => {
             .status(201)
             .json({ message: "Trilha cadastrada com sucesso." });
     } catch (error) {
-        console.log(error);
+
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -70,7 +70,7 @@ const AdminAddTrackContent = async (req, res) => {
         req.body;
 
     try {
-        if (!name || !type || !duration || !url) {
+        if (!name || !type || !duration || !url || !creator) {
             return res
                 .status(400)
                 .json({ message: "Informe todos os dados obrigatórios" });
@@ -82,8 +82,8 @@ const AdminAddTrackContent = async (req, res) => {
         if (!trackExists) return res.status(404).json({ message: "Triha não cadastrada." });
 
         if (
-            (type === "artigo" && !description) ||
-            (type === "artigo" && !url_image)
+            (type === "Artigo" && !description) ||
+            (type === "Artigo" && !url_image)
         ) {
             return res.status(400).json({
                 message:
@@ -109,7 +109,7 @@ const AdminAddTrackContent = async (req, res) => {
             .status(201)
             .json({ message: "Conteúdo cadastrado com sucesso." });
     } catch (error) {
-        console.log(error);
+
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -125,11 +125,11 @@ const DeleteTrack = async (req, res) => {
             return res.status(401).send({ message: "Trilha não encontrado." });
         }
 
+        await knex("tracks").where({ id }).del();
         await knex("user_contents").where({ track_id: id }).del();
         await knex("contents")
             .where({ track_id: id })
             .del();
-        await knex("tracks").where({ id }).del();
         await knex("user_tracks").where({ track_id: id }).del();
 
 
@@ -137,7 +137,7 @@ const DeleteTrack = async (req, res) => {
             .status(201)
             .json({ message: "Trilha deletada com sucesso!" });
     } catch (error) {
-        console.log(error);
+
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -153,18 +153,14 @@ const DeleteContent = async (req, res) => {
                 .status(401)
                 .send({ message: "Conteúdo não encontrado." });
         }
-        await knex
-            .select()
-            .table("track_content")
-            .where({ content_id: id })
-            .del();
+
         await knex("contents").where({ id }).del();
 
         return res
             .status(201)
             .json({ message: "Conteúdo deletada com sucesso!" });
     } catch (error) {
-        console.log(error);
+
         return res.status(500).json({ message: "Erro no servidor." });
     }
 };
@@ -184,7 +180,6 @@ const UpdateTrack = async (req, res) => {
 
         return res.status(200).json({ message: "Trilha atualizada com sucesso!" });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 }
@@ -217,7 +212,6 @@ const UpdateContent = async (req, res) => {
 
         return res.status(200).json({ message: "Conteúdo atualizada com sucesso!" });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 }
@@ -232,9 +226,7 @@ const GetAllContent = async (req, res) => {
         }
 
         return res.status(200).json(allContent);
-
     } catch (error) {
-        console.log(error);
         return res.status(500).json({ message: "Erro no servidor." });
     }
 }

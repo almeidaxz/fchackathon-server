@@ -20,7 +20,6 @@ const {
     AdminAddTrackContent,
     DeleteContent,
     DeleteTrack,
-    AdminSignUp,
     UpdateTrack,
     UpdateContent,
     GetAllContent
@@ -32,7 +31,6 @@ const { userLoginSchema } = require("./schemas/userLoginSchema");
 const { userSignUpSchema } = require("./schemas/userSignUpSchema");
 
 routes.post("/signup", validateUserData(userSignUpSchema), SignUp);
-routes.post("/admin", AdminSignUp);
 routes.post("/login", validateUserData(userLoginSchema), Login);
 routes.post("/user/sign_track/:track_id", SignToTrack);
 routes.get("/user/:user_id/contents", GetUserContents);

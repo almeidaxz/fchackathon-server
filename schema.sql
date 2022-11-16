@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS tracks (
 
 CREATE TABLE IF NOT EXISTS contents (
     id SERIAL PRIMARY KEY,
-    track_id INTEGER REFERENCES track(id) NOT NULL,
+    track_id INTEGER REFERENCES tracks(id) ON DELETE CASCADE NOT NULL,
     name TEXT NOT NULL,
     type TEXT NOT NULL,
     duration TEXT NOT NULL,
@@ -33,13 +33,13 @@ CREATE TABLE IF NOT EXISTS contents (
 );
 
 CREATE TABLE user_tracks (
-    user_id INTEGER NOT NULL REFERENCES users(id),
-    track_id INTEGER NOT NULL REFERENCES tracks(id)
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    track_id INTEGER NOT NULL REFERENCES tracks(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS user_contents (
-  	user_id INTEGER NOT NULL REFERENCES users(id),
-  	content_id INTEGER NOT NULL REFERENCES contents(id),
-    track_id INTEGER NOT NULL REFERENCES tracks(id),
+  	user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  	content_id INTEGER NOT NULL REFERENCES contents(id) ON DELETE CASCADE,
+    track_id INTEGER NOT NULL REFERENCES tracks(id) ON DELETE CASCADE,
     complete BOOLEAN NOT NULL
 );

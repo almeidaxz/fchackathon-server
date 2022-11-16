@@ -15,7 +15,7 @@
 <span>Em breve documentação completa.</span>
 
 <h4>Repositório do Front: https://github.com/afonsonrodrigues/fchackathon-front</h4>
-<h4>Deploy do Back: https://squad27-server.up.railway.app/</h4>
+<h4>Deploy do Back: https://squad27-evolution.herokuapp.com/</h4>
 <h4>Deploy do Front: https://squad27-app-afonsonrodrigues.vercel.app/</h4>
 
 <h5>

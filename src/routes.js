@@ -20,16 +20,13 @@ const {
     AdminAddTrackContent,
     DeleteContent,
     DeleteTrack,
-    AdminSignUp
+    AdminSignUp,
     UpdateTrack,
     UpdateContent,
     GetAllContent
 } = require("./controllers/admins");
 const {
     validateUserData,
-    loginRequired,
-    loginOptional,
-    validateEmailUser,
 } = require("./middlewares/users");
 const { userLoginSchema } = require("./schemas/userLoginSchema");
 const { userSignUpSchema } = require("./schemas/userSignUpSchema");
